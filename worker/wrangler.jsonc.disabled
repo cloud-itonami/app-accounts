@@ -1,0 +1,38 @@
+// SCAFFOLD ONLY — 拡張子 .disabled にして wrangler が検出しないようにしている。
+// ADR-0024 Step 3 migration 時に `wrangler.jsonc` にリネームし route を有効化する。
+// 有効化の前提条件:
+//   1) ADR-0022 Step 7 本番 deploy 完了 (zero-traffic 確認済)
+//   2) ADR-0024 Step 2 完了 (auth Worker から accounts.etzhayyim.com route 剥離)
+//   3) ACCOUNTS_DB (D1) 作成済
+//   4) AUTH_SERVICE service binding 経由の passkey lookup 実装済
+{
+  "name": "etzhayyim-accounts",
+  "main": "src-cljs/index.mjs",
+  "compatibility_date": "2025-03-17",
+  "assets": {
+    "directory": "./svelte/build",
+    "binding": "ASSETS",
+    "html_handling": "drop-trailing-slash",
+    "not_found_handling": "single-page-application",
+    "run_worker_first": true
+  },
+  "d1_databases": [
+    {
+      "binding": "ACCOUNTS_DB",
+      "database_name": "etzhayyim-accounts",
+      "database_id": "TBD-create-via-wrangler-d1-create"
+    }
+  ],
+  "services": [
+    { "binding": "AUTH_SERVICE", "service": "etzhayyim-auth" }
+  ],
+  "vars": {
+    "GOOGLE_OAUTH_CLIENT_ID": "",
+    "GOOGLE_OAUTH_CLIENT_SECRET": "",
+    "MICROSOFT_OAUTH_CLIENT_ID": "",
+    "MICROSOFT_OAUTH_CLIENT_SECRET": ""
+  },
+  "routes": [
+    { "pattern": "accounts.etzhayyim.com/*", "zone_name": "etzhayyim.com" }
+  ]
+}
