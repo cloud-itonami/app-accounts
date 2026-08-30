@@ -25,7 +25,7 @@ Measured 2026-08-16. Every row is reproducible from
 | What this repo asserts | What is true now |
 |---|---|
 | `CLAUDE.md`: "auth Worker の現行 route が `accounts.etzhayyim.com/*` を serve し続ける" | `accounts.etzhayyim.com` is **NXDOMAIN**. Not a stale route — no DNS record at all. The zone itself is healthy (Cloudflare NS, apex answers `200`), so this is one missing label, not an outage. |
-| `wrangler.jsonc.disabled` blocks deploy until the route is peeled off the auth Worker | There is no route to peel off. `authn.etzhayyim.com` still answers `200`, but `/api/accounts/session` and `/xrpc/com.etzhayyim.auth.linkEmailBegin` both `301` to `auth.gftd.ai`, where `/api/accounts/session` is `404`. |
+| `wrangler.jsonc.disabled` blocks deploy until the route is peeled off the auth Worker | There is no route to peel off. `authn.etzhayyim.com` still answers `200`, but `/api/accounts/session` and `/xrpc/com.etzhayyim.auth.linkEmailBegin` both `301` to `auth.kotoba.cloud`, where `/api/accounts/session` is `404`. |
 | `MIGRATION-TODO.md`: seed awaiting a Stripe/fiat → USDC codemod | The codemod scan recorded in that same file found none of the patterns it was written to remove. The blocker was never the codemod. |
 | ADR-0024: split `accounts.etzhayyim.com` off `60-apps/etzhayyim-project-auth` | `etzhayyim/root@main:60-apps` now contains exactly one entry, `etzhayyim-project-organism`. The Worker this was to split from is gone from the default branch. |
 
