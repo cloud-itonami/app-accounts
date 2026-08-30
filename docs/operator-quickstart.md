@@ -61,18 +61,20 @@ for p in /api/accounts/session /xrpc/com.etzhayyim.auth.linkEmailBegin; do
   printf '%-45s -> ' "$p"
   curl -sS -o /dev/null -w '%{http_code} %{redirect_url}\n' --max-time 12 "https://authn.etzhayyim.com$p"
 done
-curl -sS -o /dev/null -w 'auth.kotoba.cloud/api/accounts/session=%{http_code}\n' \
-  --max-time 12 https://auth.kotoba.cloud/api/accounts/session
+curl -sS -o /dev/null -w 'auth.gftd.ai/api/accounts/session=%{http_code}\n' \
+  --max-time 12 https://auth.gftd.ai/api/accounts/session
 ```
 
 ```
-/api/accounts/session                         -> 301 https://auth.kotoba.cloud/api/accounts/session
-/xrpc/com.etzhayyim.auth.linkEmailBegin       -> 301 https://auth.kotoba.cloud/xrpc/com.etzhayyim.auth.linkEmailBegin
-auth.kotoba.cloud/api/accounts/session=404
+/api/accounts/session                         -> 301 https://auth.gftd.ai/api/accounts/session
+/xrpc/com.etzhayyim.auth.linkEmailBegin       -> 301 https://auth.gftd.ai/xrpc/com.etzhayyim.auth.linkEmailBegin
+auth.gftd.ai/api/accounts/session=404
 ```
 
-The redirect target is a different domain, and the path this repository was
-built for is `404` there. **There is no traffic waiting to be split off.**
+The live hop is `auth.gftd.ai` (reconfirmed 2026-08-30). The intended auth hub
+is `auth.kotoba.cloud` (not `authn.gftd.ai`); that is desired topology, not the
+Location header. The path this repository was built for is `404` on the live
+hop. **There is no traffic waiting to be split off.**
 
 ## 4. Confirm nothing here can deploy
 
@@ -166,7 +168,7 @@ is current.
 |---|---|---|
 | 1 | `NOERROR` | The hostname is back. `CLAUDE.md`'s plan may be live again — escalate before touching anything. |
 | 2 | apex down | An etzhayyim-wide outage, unrelated to this repository. Not yours. |
-| 3 | `200` on `auth.kotoba.cloud/api/accounts/session` | The account API is being served again. Find out by whom before proposing retirement. |
+| 3 | `200` on `auth.gftd.ai/api/accounts/session` | The account API is being served again on the live hop. Find out by whom before proposing retirement. |
 | 4 | `wrangler.jsonc` exists, or handler is not `501` | Someone started the migration. `git log` first. |
 | 5 | any sha differs | The working tree drifted from the recorded extraction. Do **not** retire — reconcile against upstream first. |
 | 6 | either `404` | The replacement moved. The README's "where the responsibility went" needs re-checking before it can be cited. |
