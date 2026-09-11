@@ -82,7 +82,7 @@ Two independent guards. Both must hold:
 
 ```bash
 ls worker/wrangler.jsonc 2>&1 | tail -1        # must NOT exist
-nbb --classpath worker/src-cljs -e '(ns p (:require [index])) (println (.-status (index/fetch-handler nil nil)))'
+kbb --backend sci --classpath worker/src-cljs -e '(ns p (:require [index])) (println (.-status (index/fetch-handler nil nil)))'
 ```
 
 ```
