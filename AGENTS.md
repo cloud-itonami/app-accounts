@@ -55,4 +55,4 @@ service binding 経由で auth Worker に問い合わせる (直接 `AUTH_DB` �
 
 - `90-docs/adr/0024-auth-accounts-worker-topology.md`
 - `90-docs/adr/0022-auth-topology-consolidation.md`
-- `60-apps/etzhayyim-project-auth/CLAUDE.md`
+- `60-apps/etzhayyim-project-auth/AGENTS.md`

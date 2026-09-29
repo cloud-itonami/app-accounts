@@ -7,7 +7,7 @@ an auth Worker under ADR-0024 Step 3. It never shipped. The handler returns
 `501`, `wrangler.jsonc` is renamed `.disabled` so no deploy can reach it, and
 **the hostname it was written for no longer exists in DNS.**
 
-Nothing here is wired to anything. Read this file before you read `CLAUDE.md`
+Nothing here is wired to anything. Read this file before you read `AGENTS.md`
 or `MIGRATION-TODO.md`, both of which describe a topology that has since been
 dismantled around them.
 
@@ -24,7 +24,7 @@ Measured 2026-08-16. Every row is reproducible from
 
 | What this repo asserts | What is true now |
 |---|---|
-| `CLAUDE.md`: "auth Worker の現行 route が `accounts.etzhayyim.com/*` を serve し続ける" | `accounts.etzhayyim.com` is **NXDOMAIN**. Not a stale route — no DNS record at all. The zone itself is healthy (Cloudflare NS, apex answers `200`), so this is one missing label, not an outage. |
+| `AGENTS.md`: "auth Worker の現行 route が `accounts.etzhayyim.com/*` を serve し続ける" | `accounts.etzhayyim.com` is **NXDOMAIN**. Not a stale route — no DNS record at all. The zone itself is healthy (Cloudflare NS, apex answers `200`), so this is one missing label, not an outage. |
 | `wrangler.jsonc.disabled` blocks deploy until the route is peeled off the auth Worker | There is no route to peel off. `authn.etzhayyim.com` still answers `200`, but `/api/accounts/session` and `/xrpc/com.etzhayyim.auth.linkEmailBegin` both `301` to `auth.gftd.ai` (reconfirmed 2026-08-30), where `/api/accounts/session` is `404`. The intended auth hub is `auth.kotoba.cloud` (not `authn.gftd.ai`); that is desired topology, not the live Location. |
 | `MIGRATION-TODO.md`: seed awaiting a Stripe/fiat → USDC codemod | The codemod scan recorded in that same file found none of the patterns it was written to remove. The blocker was never the codemod. |
 | ADR-0024: split `accounts.etzhayyim.com` off `60-apps/etzhayyim-project-auth` | `etzhayyim/root@main:60-apps` now contains exactly one entry, `etzhayyim-project-organism`. The Worker this was to split from is gone from the default branch. |
@@ -64,7 +64,7 @@ extracted was already a shell.
 |---|---|
 | `worker/src-cljs/index.cljs` | The whole implementation: a `fetch` handler returning `501`. |
 | `worker/wrangler.jsonc.disabled` | Deploy config, deliberately un-findable by `wrangler`. `database_id` is the literal string `TBD-create-via-wrangler-d1-create`. |
-| `CLAUDE.md` | The ADR-0024 split plan. Describes the pre-2026-07 topology. |
+| `AGENTS.md` | The ADR-0024 split plan. Describes the pre-2026-07 topology. |
 | `MIGRATION-TODO.md` | Charter-compliance checklist, all boxes unchecked. |
 | `NOTICE` | Apache-2.0 + etzhayyim Charter Rider v3.1. |
 
@@ -98,7 +98,7 @@ unilaterally. The options, and what each costs:
    detach, so this would give one custody two implementations, which is
    precisely what ADR-2608110100 declined to do.
 3. **Leave it.** Costs nothing but keeps a shell that reads, to anyone who
-   opens `CLAUDE.md` first, as active planned work.
+   opens `AGENTS.md` first, as active planned work.
 
-Until one is chosen, this file is the correction: **do not treat `CLAUDE.md` or
+Until one is chosen, this file is the correction: **do not treat `AGENTS.md` or
 `MIGRATION-TODO.md` here as a live plan.**

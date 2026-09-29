@@ -12,7 +12,7 @@ recorded output is what it printed. Run them from the repository root.
 
 ## 1. Is the hostname still gone?
 
-This is the load-bearing fact. If it comes back, everything in `CLAUDE.md`
+This is the load-bearing fact. If it comes back, everything in `AGENTS.md`
 becomes worth re-reading.
 
 ```bash
@@ -24,7 +24,7 @@ dig accounts.etzhayyim.com +noall +comments | grep -i status:
 ```
 
 `NXDOMAIN` means the label does not exist — not that it exists and points
-nowhere. **If this ever prints `NOERROR`, stop and re-read `CLAUDE.md`.**
+nowhere. **If this ever prints `NOERROR`, stop and re-read `AGENTS.md`.**
 
 Only `status:` is stable; the `id:` is a fresh random number every query.
 
@@ -53,7 +53,7 @@ The two nameservers come back in either order; both names are what matter.
 
 ## 3. Where did the account routes go?
 
-`CLAUDE.md` lists the paths this Worker was to take over. They still answer on
+`AGENTS.md` lists the paths this Worker was to take over. They still answer on
 `authn`, but not from etzhayyim:
 
 ```bash
@@ -102,11 +102,11 @@ claim is checkable, and checking it distinguishes "empty because it was always a
 shell" from "empty because something was lost":
 
 ```bash
-git hash-object CLAUDE.md MIGRATION-TODO.md NOTICE \
+git hash-object AGENTS.md MIGRATION-TODO.md NOTICE \
   worker/wrangler.jsonc.disabled worker/src-cljs/index.cljs
 gh api repos/etzhayyim/root/git/trees/691c245da48f3acb11dd757218f189ff2482b1c8:60-apps \
   --jq '.tree[] | select(.path=="etzhayyim-project-accounts") | .sha'
-wc -c CLAUDE.md MIGRATION-TODO.md NOTICE \
+wc -c AGENTS.md MIGRATION-TODO.md NOTICE \
   worker/wrangler.jsonc.disabled worker/src-cljs/index.cljs | tail -1
 ```
 
@@ -130,7 +130,7 @@ gh api "repos/etzhayyim/root/contents/60-apps/etzhayyim-project-accounts?ref=691
 ```
 
 ```
-ebfa85418e57	CLAUDE.md
+ebfa85418e57	AGENTS.md
 efdef9cf1eef	MIGRATION-TODO.md
 b59e2107c25b	NOTICE
 0fa0e9b0dc13	worker
@@ -166,7 +166,7 @@ is current.
 
 | Check | Failure | What it means |
 |---|---|---|
-| 1 | `NOERROR` | The hostname is back. `CLAUDE.md`'s plan may be live again — escalate before touching anything. |
+| 1 | `NOERROR` | The hostname is back. `AGENTS.md`'s plan may be live again — escalate before touching anything. |
 | 2 | apex down | An etzhayyim-wide outage, unrelated to this repository. Not yours. |
 | 3 | `200` on `auth.gftd.ai/api/accounts/session` | The account API is being served again on the live hop. Find out by whom before proposing retirement. |
 | 4 | `wrangler.jsonc` exists, or handler is not `501` | Someone started the migration. `git log` first. |
